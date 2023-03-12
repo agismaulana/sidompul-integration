@@ -34,7 +34,6 @@ exports.getToken = (req, res, next) => {
     .then(result => {
         if(code !== 200) 
             return res.status(code).json(result)
-        console.log(result)
         req.session.authorization = result.access_token
         return next()
     })
@@ -407,7 +406,7 @@ exports.getXWGStock = (req, res) => {
     })
     .then(response => {
         code = response.status
-        console.log(response.json(), code)
+        console.log(response, code)
         return response.json()
     })
     .then(result => {
@@ -538,7 +537,7 @@ exports.transactionHistory = (req, res) => {
         apiId,
         apiKey
     } = req.query
-    const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-transaction-history?startDate=${startDate}&endDate=${endDate}`
+    const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-transaction-history?startdate=${startDate}&enddate=${endDate}`
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
         'apiid': apiId,
@@ -561,6 +560,7 @@ exports.transactionHistory = (req, res) => {
     .catch(err => res.json(err))
 }
 
+// Get Transaction History Detail
 exports.transactionHistoryDetail = (req, res) => {
     const {
         transactionId,
@@ -595,6 +595,8 @@ exports.transactionHistoryDetail = (req, res) => {
 // GET AWG Transaction info
 exports.getAWGTransactionInfo = (req, res) => {
     const {
+        apiId,
+        apiKey,
         beginDate,
         endDate,
         type
@@ -619,12 +621,16 @@ exports.getAWGTransactionInfo = (req, res) => {
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        return res.json(err)
+    })
 }
 
 // GET XWG Transaction info
 exports.getXWGTransactionInfo = (req, res) => {
     const {
+        apiId,
+        apiKey,
         beginDate,
         endDate,
         type
