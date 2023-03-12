@@ -25,7 +25,7 @@ exports.getToken = (req, res, next) => {
     let get = fetch(uri, {
         headers,
         method: 'POST',
-        body: JSON.stringify(body),
+        body,
     })
     .then(response => {
         code = response.status
@@ -589,7 +589,9 @@ exports.transactionHistoryDetail = (req, res) => {
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        return res.json(err)
+    })
 }
 
 // GET AWG Transaction info
