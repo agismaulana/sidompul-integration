@@ -3,18 +3,24 @@
   "version": "1.0.0",
   "description": "Aplikasi Integrasi Sidompul xl",
   "main": "index.js",
+  "start": "nodemon index.js",
+  "dev": "npm run build && nodemon start",
   "scripts": {
+    "build": "npx tailwindcss -i ./dist/css/output.css -o ./src/css/style.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ega Try Agung Nurfata",
   "license": "ISC",
   "dependencies": {
+    "autoprefixer": "^10.4.14",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "ip": "^1.1.8",
@@ -24,6 +30,7 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.21",
+    "tailwindcss": "^3.2.7"
   }
 }
