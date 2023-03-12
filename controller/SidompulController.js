@@ -174,7 +174,7 @@ exports.postPackage = (req, res) => {
     fetch(uri, {
         headers,
         method: 'POST',
-        body
+        body: JSON.stringify(body)
     })
     .then(response => {
         code = response.status
@@ -214,7 +214,7 @@ exports.postPackagePulsa = (req, res) => {
     fetch(uri, {
         headers,
         method: 'POST',
-        body
+        body: JSON.stringify(body)
     })
     .then(response => {
         code = response.status
@@ -254,7 +254,7 @@ exports.postW2P = (req, res) => {
     fetch(uri, {
         headers,
         method: 'POST',
-        body
+        body: JSON.stringify(body)
     })
     .then(response => {
         code = response.status
@@ -330,7 +330,7 @@ exports.postAWGTembak = (req, res) => {
     fetch(uri, {
         headers,
         method: 'POST',
-        body,
+        body: JSON.stringify(body)
     })
     .then(response => {
         code = response.status
@@ -369,7 +369,7 @@ exports.postAWGTransactionInfoDetail = (req, res) => {
     fetch(uri, {
         headers,
         method: 'POST',
-        body
+        body: JSON.stringify(body)
     })
     .then(response => {
         code = response.status
@@ -448,7 +448,7 @@ exports.postXWGTembak = (req, res) => {
     fetch(uri, {
         headers,
         method: 'POST',
-        body,
+        body: JSON.stringify(body)
     })
     .then(response => {
         code = response.status
@@ -487,7 +487,7 @@ exports.postXWGTransactionInfoDetail = (req, res) => {
     fetch(uri, {
         headers,
         method: 'POST',
-        body
+        body: JSON.stringify(body)
     })
     .then(response => {
         code = response.status
@@ -589,7 +589,9 @@ exports.transactionHistoryDetail = (req, res) => {
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        return res.json(err)
+    })
 }
 
 // GET AWG Transaction info
