@@ -51,12 +51,12 @@ module.exports = (app, router) => {
         return path['get-token'](req, res, next)
     }
 
-    const managePin = (req, res) => {
+    const managePin = (req, res, next) => {
         return path['encrypted-pin'](req, res, next)
     }
 
     const middlewareSession = async(req, res, next) => {
-        if(req.query.pin) {
+        if(req.body.pin) {
             await manageAuthorization(req, res, next) 
             await managePin(req, res, next)
             return;
@@ -68,7 +68,7 @@ module.exports = (app, router) => {
     }
 
     router.post('/', (req, res) => {
-        return path[req.query.path](req, res)
+        return path[req.body.path](req, res)
     })
     app.use('/apitrx', middlewareSession, router)
 }

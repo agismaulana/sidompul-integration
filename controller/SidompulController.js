@@ -10,7 +10,7 @@ exports.getToken = (req, res, next) => {
     const {
         clientId,
         clientSecret
-    } = req.query;
+    } = req.body;
 
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -38,7 +38,6 @@ exports.getToken = (req, res, next) => {
         return next()
     })
     .catch(err => {
-        console.log(err)
         return res.json(err)
     })
 }
@@ -50,7 +49,7 @@ exports.encryptedPin = (req, res, next) => {
         apiId,
         apiKey,
         pin
-    } = req.query
+    } = req.body
 
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -71,6 +70,7 @@ exports.encryptedPin = (req, res, next) => {
         body: JSON.stringify(body)
     })
     .then(response => {
+        console.log(response)
         code = response.status
         return response.json()
     })
@@ -91,7 +91,7 @@ exports.getPulsaBalance = (req, res) => {
     const {
         apiId,
         apiKey
-    } = req.query
+    } = req.body
 
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -122,7 +122,7 @@ exports.getDompulBalance = (req, res) => {
     const {
         apiId,
         apiKey
-    } = req.query
+    } = req.body
 
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -155,7 +155,7 @@ exports.postPackage = (req, res) => {
         msisdn,
         pin,
         productCode
-    } = req.query
+    } = req.body
     
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -195,7 +195,7 @@ exports.postPackagePulsa = (req, res) => {
         msisdn,
         pin,
         productCode
-    } = req.query
+    } = req.body
     
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -234,8 +234,8 @@ exports.postW2P = (req, res) => {
         apiKey,
         msisdn,
         pin,
-        productCode
-    } = req.query
+        denom
+    } = req.body
     
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -248,7 +248,7 @@ exports.postW2P = (req, res) => {
     const body = {
         msisdn,
         pin,
-        productCode
+        denom
     }
 
     fetch(uri, {
@@ -272,7 +272,7 @@ exports.getAWGStock = (req, res) => {
         type,
         apiId,
         apiKey
-    } = req.query
+    } = req.body
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-awg-stock${type ? `?roType=${type}` : "" }`
 
     const headers = {
@@ -290,11 +290,9 @@ exports.getAWGStock = (req, res) => {
     })
     .then(response => {
         code = response.status
-        console.log(response)
         return response.json()
     })
     .then(result => {
-        console.log(result)
         return res.status(code).json(result)
     })
     .catch(err => {
@@ -310,8 +308,9 @@ exports.postAWGTembak = (req, res) => {
         apiKey,
         target,
         vid,
+        command,
         type
-    } = req.query
+    } = req.body
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
         'apiid': apiId,
@@ -324,6 +323,7 @@ exports.postAWGTembak = (req, res) => {
         "target": [target],
         "pin": req.session.pin,
         "vid": vid,
+        "command": command,
         "allowType": type
     }
 
@@ -350,7 +350,7 @@ exports.postAWGTransactionInfoDetail = (req, res) => {
         apiKey,
         command, 
         transactionId,
-    } = req.query
+    } = req.body
 
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -387,7 +387,7 @@ exports.getXWGStock = (req, res) => {
         type,
         apiId,
         apiKey
-    } = req.query
+    } = req.body
  
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-xwg-stock${type ? `?roType=${type}` : "" }`
     
@@ -406,14 +406,12 @@ exports.getXWGStock = (req, res) => {
     })
     .then(response => {
         code = response.status
-        console.log(response, code)
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
     .catch(err => {
-        console.log(err)
         return res.json(err)
     })
 }
@@ -428,7 +426,7 @@ exports.postXWGTembak = (req, res) => {
         vid,
         type,
         command
-    } = req.query
+    } = req.body
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
         'apiid': apiId,
@@ -468,7 +466,7 @@ exports.postXWGTransactionInfoDetail = (req, res) => {
         apiKey,
         command, 
         transactionId,
-    } = req.query
+    } = req.body
 
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -504,7 +502,7 @@ exports.getProductList = (req, res) => {
     const {
         apiId,
         apiKey
-    } = req.query
+    } = req.body
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-product-list`
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -519,7 +517,6 @@ exports.getProductList = (req, res) => {
         method: 'GET'
     })
     .then(response => {
-        console.log(response)
         code = response.status
         return response.json()
     })
@@ -536,7 +533,7 @@ exports.transactionHistory = (req, res) => {
         endDate,
         apiId,
         apiKey
-    } = req.query
+    } = req.body
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-transaction-history?startdate=${startDate}&enddate=${endDate}`
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -568,7 +565,7 @@ exports.transactionHistoryDetail = (req, res) => {
         orderStatus,
         apiId,
         apiKey
-    } = req.query
+    } = req.body
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-transaction-history-detail?transactionId=${transactionId}&msisdnB=${msisdn}&orderStatus=${orderStatus}`
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -602,7 +599,7 @@ exports.getAWGTransactionInfo = (req, res) => {
         beginDate,
         endDate,
         type
-    } = req.query
+    } = req.body
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-awg-transaction-info?beginDate=${beginDate}&endDate=${endDate}&servicetype=${type}`
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -636,7 +633,7 @@ exports.getXWGTransactionInfo = (req, res) => {
         beginDate,
         endDate,
         type
-    } = req.query
+    } = req.body
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-xwg-transaction-info?beginDate=${beginDate}&endDate=${endDate}&servicetype=${type}`
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
