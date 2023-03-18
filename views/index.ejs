@@ -1,36 +1,23 @@
 <%- include('./layouts/header') %>
 <div class="container mx-auto px-5 pt-3">
-    <h1 class="mb-3">History Transaction</h1>
-
     <div class="grid">
-        <div class="flex gap-2 ml-auto">
-            <div class="col-6">
-                <label for="">Api Id</label>
-                <input type="text" id="apiKey"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        <div class="flex align-middle justify-between">
+            <div class="my-auto">
+                <h3 class="text-2xl">Histori Transaksi</h3>
             </div>
-            <div class="col-6">
-                <label for="">Api Key</label>
-                <input type="text" id="apiId"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="">
-            </div>
-            <div class="col-6">
-                <label for="">Pin</label>
-                <input type="text" id="pin"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="e.g: 12342">
-            </div>
-            <div class="col-6">
-                <label for="">Tanggal Dimulai</label>
-                <input type="date" id="beginDate"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-            <div class="col-6">
-                <label for="">Tanggal Berakhir</label>
-                <input type="date" id="beginDate"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-            <div class="col-6 my-auto">
-                <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">filter</button>
+            <div class="flex gap-2 ml-auto" id="filter">
+                <div class="col-6">
+                    <input type="date" id="beginDate"
+                        class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="col-6 text-lg my-auto"> s/d </div>
+                <div class="col-6">
+                    <input type="date" id="endDate"
+                        class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="col-6 my-auto">
+                    <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded" id="button-filter">filter</button>
+                </div>
             </div>
         </div>
     
@@ -48,21 +35,86 @@
                         <th class="border p-3">Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="border p-3">628773491005</td>
-                        <td class="border p-3">TK_DSUNFF5</td>
-                        <td class="border p-3">Free Fire 5 Diamonds + 100MB</td>
-                        <td class="border p-3">1000.0</td>
-                        <td class="border p-3">2022-10-07 15:08:57</td>
-                        <td class="border p-3">fulfillment</td>
-                        <td class="border p-3">Sidompul</td>
-                        <td class="border p-3">Sukses</td>
-                    </tr>
+                <tbody id="data">
+                    
                 </tbody>
             </table>
     
         </div>
     </div>
 </div>
+
+<script>
+    const url = `<%= process.env.APP_HOST %>`
+    const headers = {
+        'Content-Type': 'x-www-form-urlencoded'
+    }
+    $(function() {
+        const endDate = new Date();
+        endDate.setDate(new Date().getDate() + 7)
+
+        let data = {
+            beginDate: new Date(),
+            endDate: endDate 
+        }
+        loadData(data)
+
+        $('#button-filter').on('click', function() {
+            const data = {
+                beginDate: $(`#beginDate`).val(),
+                endDate: $(`#endDate`).val(),
+            }
+
+            loadData(data)
+        })
+    })
+
+    const loadData = (data) => {
+        const {
+            beginDate,
+            endDate
+        } = data
+
+        $.ajax({
+            url: `${url}/apitrx`,
+            method: "POST",
+            data: JSON.stringify({
+                path: 'get-transaction-history',
+                apiId: '4c37c51b-690b-4cea-b164-5a2396efbda5',
+                apiKey: '01c55051-a3d4-4dcf-8a18-5e2577886ca4',
+                clientId: 'dFS6pMcrgSw6EjCIcsvZjR2kEa8a',
+                clientSecret: 'yHlfWpyCNHwwKgW4_WeKdAJCRMoa',
+                beginDate,
+                endDate
+            }),
+            contentType: 'application/json',
+            success: function(response) {
+                let html;
+                if(response.result.data.length == 0) {
+                    html = '<p class="text-center p-3">Belum Ada Transaksi</p>'
+                }
+
+                $.each(response.result.data, function(key, value) {
+                    html += `
+                        <tr>
+                            <td class="border p-3">${value.dest_number}</td>
+                            <td class="border p-3">${value.serial_number}</td>
+                            <td class="border p-3">${value.product}</td>
+                            <td class="border p-3">${value.amount}</td>
+                            <td class="border p-3">${value.date}</td>
+                            <td class="border p-3">${value.service_type}</td>
+                            <td class="border p-3">${value.payment_method}</td>
+                            <td class="border p-3">${value.status}</td>
+                        </tr>
+                    ` 
+                })
+                $('#data').html(html)
+            },
+            error: function(err) {
+                console.log(err)
+            }
+        })
+    }
+</script>
+
 <%- include('./layouts/footer') %>

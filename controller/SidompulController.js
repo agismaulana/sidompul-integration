@@ -615,12 +615,14 @@ exports.getAWGTransactionInfo = (req, res) => {
     })
     .then(response => {
         code = response.status
+        console.log(response);
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
     .catch(err => {
+        console.log(err)
         return res.json(err)
     })
 }
