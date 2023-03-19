@@ -698,6 +698,10 @@ video {
   gap: 2rem;
 }
 
+.break-all {
+  word-break: break-all;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
