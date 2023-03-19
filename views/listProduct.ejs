@@ -62,10 +62,10 @@
     const loadData = (path) => {
         const data = {
             path: path,
-            apiId: '4c37c51b-690b-4cea-b164-5a2396efbda5',
-            apiKey: '01c55051-a3d4-4dcf-8a18-5e2577886ca4',
-            clientId: 'dFS6pMcrgSw6EjCIcsvZjR2kEa8a',
-            clientSecret: 'yHlfWpyCNHwwKgW4_WeKdAJCRMoa',
+            apiId: user.app_id,
+            apiKey: user.app_key,
+            clientId: user.client_id,
+            clientSecret: user.client_secret,
         }
 
         if(path != 'get-product-list')
@@ -131,13 +131,13 @@
                         `
                     })
 
+                $('#thead').html(thead)
                 $('#data').html(html)
             }
         })
     }
 
     const changeShowSelect = (val) => {
-        console.log(val)
         if(val == 'block') {
             $('#type').removeClass('hidden')
             $('#type').addClass('block')

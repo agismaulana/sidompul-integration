@@ -1,30 +1,32 @@
 <%- include('./layouts/header') %>
 <div class="container mx-auto px-5 pt-3">
-    <h1 class="mb-3">XWG History Transaction</h1>
 
     <div class="grid">
-        <div class="flex gap-2 ml-auto">
-            <div class="col-6">
-                <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" id="setType">
-                    <option selected>Pilih Tipe Pelayanan</option>
-                    <option class="p-3" value="SELLVOUCHER">Sell Voucher</option>
-                    <option class="p-3" value="PHYSICALVOUCHER">Physical Voucher</option>
-                    <option class="p-3" value="TRANSFER">Transfer</option>
-                    <option class="p-3" value="BUYSTOCK">Buy Stock</option>
-                    <option class="p-3" value="EXTENDSTOCK">Extend Stock</option>
-                </select>
-            </div>
-            <div class="col-6">
-                <input type="date" id="beginDate"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-            <div class="col-6 text-lg my-auto"> s/d </div>
-            <div class="col-6">
-                <input type="date" id="endDate"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-            <div class="col-6 my-auto">
-                <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded" id="button-filter">filter</button>
+        <div class="flex justify-between align-middle">
+            <p class="text-lg">XWG History Transaction</p>
+            <div class="flex gap-2 justify-between">
+                <div class="col-6">
+                    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" id="setType">
+                        <option selected>Pilih Tipe Pelayanan</option>
+                        <option class="p-3" value="SELLVOUCHER">Sell Voucher</option>
+                        <option class="p-3" value="PHYSICALVOUCHER">Physical Voucher</option>
+                        <option class="p-3" value="TRANSFER">Transfer</option>
+                        <option class="p-3" value="BUYSTOCK">Buy Stock</option>
+                        <option class="p-3" value="EXTENDSTOCK">Extend Stock</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <input type="date" id="beginDate"
+                        class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="col-6 text-lg my-auto"> s/d </div>
+                <div class="col-6">
+                    <input type="date" id="endDate"
+                        class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                <div class="col-6 my-auto">
+                    <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded" id="button-filter">filter</button>
+                </div>
             </div>
         </div>
     
@@ -85,10 +87,10 @@
             method: 'POST',
             data: JSON.stringify({
                 path: 'get-xwg-transaction-info',
-                apiId: '4c37c51b-690b-4cea-b164-5a2396efbda5',
-                apiKey: '01c55051-a3d4-4dcf-8a18-5e2577886ca4',
-                clientId: 'dFS6pMcrgSw6EjCIcsvZjR2kEa8a',
-                clientSecret: 'yHlfWpyCNHwwKgW4_WeKdAJCRMoa',
+                apiId: user.app_id,
+                apiKey: user.app_key,
+                clientId: user.client_id,
+                clientSecret: user.client_secret,
                 beginDate: data.beginDate,
                 endDate: data.endDate,
                 type: data.serviceType
