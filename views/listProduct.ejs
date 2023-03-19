@@ -62,10 +62,10 @@
     const loadData = (path) => {
         const data = {
             path: path,
-            apiId: user.app_id,
-            apiKey: user.app_key,
-            clientId: user.client_id,
-            clientSecret: user.client_secret,
+            apiId: `<%= user.app_id ?? null %>`,
+            apiKey: `<%= user.app_key ?? null %>`,
+            clientId: `<%= user.client_id ?? null %>`,
+            clientSecret: `<%= user.client_secret ?? null %>`,
         }
 
         if(path != 'get-product-list')
@@ -79,16 +79,16 @@
             success: function (response) {
                 let html;
                 let thead = `
-                    <tr>
+                    <tr class="w-full">
                         <th class="border p-3">No</th>
                         <th class="border p-3">Kode Produk</th>
                         <th class="border p-3">Nama Produk</th>
                         <th class="border p-3">Harga Produk</th>
                     </tr>
                 `
-                if(path != 'get-product-list')
+                if(path != 'get-product-list') {
                     thead = `
-                        <tr>
+                        <tr class="w-full">
                             <th class="border p-3">No</th>
                             <th class="border p-3">Id Voucher (vid)</th>
                             <th class="border p-3">Tipe Kode Voucher</th>
@@ -101,6 +101,7 @@
                             <th class="border p-3">Tanggal Berakhir Pembayaran</th>
                         </tr>
                     `
+                }
 
 
                 $.each(response.result.data, (key, value) => {
@@ -113,23 +114,25 @@
                         </tr>
                     `
                 })
-                if(path != 'get-product-list')
+                if(path != 'get-product-list') {
+                    html = '';
                     $.each(response.result.data, (key, value) => {
                         html += `
                             <tr>
                                 <td class="border p-3">${key + 1}</td>
-                                <td class="border p-3">${value.vId}</td>
+                                <td class="border p-3 break-all">${value.vId}</td>
                                 <td class="border p-3">${value.voucherTypeCode}</td>
                                 <td class="border p-3">${value.voucherBalance}</td>
                                 <td class="border p-3">Rp. ${new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(value.voucherPrice)}</td>
                                 <td class="border p-3">${value.allowType}</td>
                                 <td class="border p-3">${value.description}</td>
-                                <td class="border p-3">${value.effectiveDate}</td>
-                                <td class="border p-3">${value.expirationDate}</td>
-                                <td class="border p-3">${value.vouExpDate}</td>
+                                <td class="border p-3">${dateFormat(value.effectiveDate)}</td>
+                                <td class="border p-3">${dateFormat(value.expirationDate)}</td>
+                                <td class="border p-3">${dateFormat(value.vouExpDate)}</td>
                             </tr>
                         `
                     })
+                }
 
                 $('#thead').html(thead)
                 $('#data').html(html)
@@ -147,6 +150,27 @@
         $('#type').removeClass('block')
         $('#type').addClass('hidden')
         return;
+    }
+
+    const dateFormat = (date) => {
+        let month = [
+            'Januari', // 0
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember', // 11
+        ]
+
+        let splitDate = date.split("-")
+        
+        return `${splitDate[0]} ${month[(+splitDate[1] - 1)]} ${splitDate[2]}`
     }
 </script>
 

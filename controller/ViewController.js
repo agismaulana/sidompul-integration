@@ -1,50 +1,96 @@
 const db = require('./../config/config');
 const cryptoJS = require('crypto-js');
 
-const getLogin = (id) => {
+exports.historyTransaction = async (req, res) => {
     db.serialize(() => {
         db.get(
-           `SELECT * FROM users where id = '${id}'`,
+           `SELECT * FROM users where id = '${req.session.user_id}'`,
            (err, row) => {
                 if(err) {
-                    return {};
+                    return res.render('index', {
+                        'title': 'History Transaction',
+                        'user': {},
+                        'loggedIn': true,
+                        'admin': req.session.admin ?? null
+                    });
                 }
-                return row;
+                return res.render('index', {
+                    'title': 'History Transaction',
+                    'user': row,
+                    'loggedIn': true,
+                    'admin': req.session.admin ?? null
+                });
            } 
         )
     })
 }
-
-exports.historyTransaction = (req, res) => {
-    res.render('index', {
-        'title': 'History Transaction',
-        'user': getLogin(req.session.id),
-        'loggedIn': true,
-        'admin': req.session.admin ?? null
-    })
-}
 exports.awgHistoryTransaction = (req, res) => {
-    res.render('awgIndex', {
-        'title': 'AWG History Transaction',
-        'user': getLogin(req.session.id),
-        'loggedIn': true,
-        'admin': req.session.admin ?? null
+    db.serialize(() => {
+        db.get(
+           `SELECT * FROM users where id = '${req.session.user_id}'`,
+           (err, row) => {
+                if(err) {
+                    return res.render('awgIndex', {
+                        'title': 'AWG History Transaction',
+                        'user': {},
+                        'loggedIn': true,
+                        'admin': req.session.admin ?? null
+                    });
+                }
+                return res.render('awgIndex', {
+                    'title': 'AWG History Transaction',
+                    'user': row,
+                    'loggedIn': true,
+                    'admin': req.session.admin ?? null
+                });
+           } 
+        )
     })
 }
 exports.xwgHistoryTransaction = (req, res) => {
-    res.render('xwgIndex', {
-        'title': 'XWG History Transaction',
-        'user': getLogin(req.session.id),
-        'loggedIn': true,
-        'admin': req.session.admin ?? null
+    db.serialize(() => {
+        db.get(
+           `SELECT * FROM users where id = '${req.session.user_id}'`,
+           (err, row) => {
+                if(err) {
+                    return res.render('xwgIndex', {
+                        'title': 'XWG History Transaction',
+                        'user': {},
+                        'loggedIn': true,
+                        'admin': req.session.admin ?? null
+                    });
+                }
+                return res.render('xwgIndex', {
+                    'title': 'XWG History Transaction',
+                    'user': row,
+                    'loggedIn': true,
+                    'admin': req.session.admin ?? null
+                });
+           } 
+        )
     })
 }
 exports.listProduct = (req, res) => {
-    res.render('listProduct', {
-        'title': 'List Product',
-        'user': getLogin(req.session.id),
-        'loggedIn': true,
-        'admin': req.session.admin ?? null
+    db.serialize(() => {
+        db.get(
+           `SELECT * FROM users where id = '${req.session.user_id}'`,
+           (err, row) => {
+                if(err) {
+                    return res.render('listProduct', {
+                        'title': 'List Product',
+                        'user': {},
+                        'loggedIn': true,
+                        'admin': req.session.admin ?? null
+                    });
+                }
+                return res.render('listProduct', {
+                    'title': 'List Product',
+                    'user': row,
+                    'loggedIn': true,
+                    'admin': req.session.admin ?? null
+                });
+           } 
+        )
     })
 }
 

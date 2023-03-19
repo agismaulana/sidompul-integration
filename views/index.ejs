@@ -80,10 +80,10 @@
             method: "POST",
             data: JSON.stringify({
                 path: 'get-transaction-history',
-                apiId: user.app_id,
-                apiKey: user.app_key,
-                clientId: user.client_id,
-                clientSecret: user.client_secret,
+                apiId: `<%= user.app_id ?? null %>`,
+                apiKey: `<%= user.app_key ?? null %>`,
+                clientId: `<%= user.client_id ?? null %>`,
+                clientSecret: `<%= user.client_secret ?? null %>`,
                 beginDate,
                 endDate
             }),
