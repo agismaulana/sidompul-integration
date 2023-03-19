@@ -20,6 +20,7 @@ exports.create = (req, res) => {
     return res.render('users/create', {
         'title': 'Tambah User',
         'loggedIn': true,
+        'user': null,
         'admin': req.session.role ?? false
     });
 }
