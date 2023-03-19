@@ -12,6 +12,8 @@ const path = require('path')
 const router = express.Router()
 dotenv.config()
 
+const db = require('./config/config');
+
 const { PORT, HOST } = process.env;
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));

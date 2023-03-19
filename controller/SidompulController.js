@@ -70,7 +70,6 @@ exports.encryptedPin = (req, res, next) => {
         body: JSON.stringify(body)
     })
     .then(response => {
-        console.log(response)
         code = response.status
         return response.json()
     })

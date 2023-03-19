@@ -1,20 +1,78 @@
+const db = require('./../config/config');
+const cryptoJS = require('crypto-js');
+
+const getLogin = (id) => {
+    db.serialize(() => {
+        db.get(
+           `SELECT * FROM users where id = '${id}'`,
+           (err, row) => {
+                if(err) {
+                    return {};
+                }
+                return row;
+           } 
+        )
+    })
+}
+
 exports.historyTransaction = (req, res) => {
     res.render('index', {
-        'title': 'History Transaction'
+        'title': 'History Transaction',
+        'user': getLogin(req.session.id),
+        'loggedIn': true,
+        'admin': req.session.admin ?? null
     })
 }
 exports.awgHistoryTransaction = (req, res) => {
     res.render('awgIndex', {
-        'title': 'AWG History Transaction'
+        'title': 'AWG History Transaction',
+        'user': getLogin(req.session.id),
+        'loggedIn': true,
+        'admin': req.session.admin ?? null
     })
 }
 exports.xwgHistoryTransaction = (req, res) => {
     res.render('xwgIndex', {
-        'title': 'XWG History Transaction'
+        'title': 'XWG History Transaction',
+        'user': getLogin(req.session.id),
+        'loggedIn': true,
+        'admin': req.session.admin ?? null
     })
 }
 exports.listProduct = (req, res) => {
     res.render('listProduct', {
-        'title': 'List Product'
+        'title': 'List Product',
+        'user': getLogin(req.session.id),
+        'loggedIn': true,
+        'admin': req.session.admin ?? null
     })
+}
+
+exports.login = (req, res) => {
+    res.render('login', {
+        'title': 'Login Page',
+        'loggedIn': false
+    })
+}
+
+exports.signedIn = (req, res) => { 
+    db.get(
+       `SELECT * FROM users WHERE client_id ="${req.body.client_id}" AND client_secret = "${req.body.client_secret}"`,
+       (err, row) => {
+            if(err) {
+                return res.redirect('/login');
+            } 
+            if(row) {
+                req.session.token = cryptoJS.SHA256(row.id).toString(cryptoJS.enc.Base64);
+                req.session.user_id = row.id;
+                req.session.role = row.role;
+                if(row.role == 'admin') {
+                    return res.redirect('/users');
+                }
+                return res.redirect('/index');
+            }
+            return res.redirect('/login');
+       } 
+    )
+    return;
 }

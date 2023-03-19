@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIDOMPUL X AOELIYA - <%= title %></title>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/datepicker.min.js"></script>
 </head>
+
+    <% if (loggedIn) { %>
     <header class="text-gray-500 body-font">
         <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
             <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
@@ -16,12 +20,16 @@
                 <span class="ml-3 text-xl">SIDOMPUL X AOELIYA</span>
             </a>
             <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-                <a href="/index" class="mr-5 hover:text-gray-900">History Transaction</a>
-                <a href="/awg-index" class="mr-5 hover:text-gray-900">AWG History Transaction</a>
-                <a href="/xwg-index" class="mr-5 hover:text-gray-900">XWG History Transaction</a>
-                <a href="/list-product" class="mr-5 hover:text-gray-900">Product List Code</a>
+                <% if (!admin) { %>
+                    <a href="/index" class="mr-5 hover:text-gray-900">Histori Transaksi</a>
+                    <a href="/awg-index" class="mr-5 hover:text-gray-900">AWG Histori Transaksi</a>
+                    <a href="/xwg-index" class="mr-5 hover:text-gray-900">XWG Histori Transaksi</a>
+                    <a href="/list-product" class="mr-5 hover:text-gray-900">List Produk</a>
+                <% } %>
+                <a href="/logout" class="block uppercase mx-auto shadow bg-red-800 hover:bg-red-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">Keluar</a>
             </nav>
         </div>
     </header>
+    <% } %>
 
 <body>

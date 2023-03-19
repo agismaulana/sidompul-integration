@@ -1,68 +1,153 @@
 <%- include('./layouts/header') %>
 <div class="container mx-auto px-5 pt-3">
-    <h1 class="mb-3">List Product</h1>
 
     <div class="grid">
-        <div class="flex gap-2 ml-auto">
-            <div class="col-6">
-                <label for="">Api Id</label>
-                <input type="text" id="apiKey"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-            <div class="col-6">
-                <label for="">Api Key</label>
-                <input type="text" id="apiId"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="">
-            </div>
-            <div class="col-6">
-                <label for="">Pin</label>
-                <input type="text" id="pin"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="e.g: 12342">
-            </div>
-            <div class="col-6">
-                <label for="">Tanggal Dimulai</label>
-                <input type="date" id="beginDate"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-            <div class="col-6">
-                <label for="">Tanggal Berakhir</label>
-                <input type="date" id="beginDate"
-                    class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-            </div>
-            <div class="col-6 my-auto">
-                <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded">filter</button>
+        <div class="flex justify-between">
+            <h1 class="text-2xl">List Product</h1>
+
+            <div class="relative flex gap-4 text-left">                
+                <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 hidden w-full p-2.5" id="type">
+                    <option selected>Pilih Tipe</option>
+                    <option class="p-3" value="get-product-list">MINI GROSIR</option>
+                </select>
+                <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" id="setProduct">
+                    <option selected>Pilih Data Produk</option>
+                    <option class="p-3" value="get-product-list">List Produk</option>
+                    <option class="p-3" value="get-awg-stock">AWG Stok</option>
+                    <option class="p-3" value="get-xwg-stock">XWG Stok</option>
+                </select>
+                <button class="block uppercase mx-auto shadow bg-indigo-800 hover:bg-indigo-700 focus:shadow-outline focus:outline-none text-white text-xs py-3 px-10 rounded" id="button-filter">filter</button>
             </div>
         </div>
-    
         <div>
-            <table class="table table-auto border-collapse border w-full mt-12">
-                <thead>
-                    <tr>
-                        <th class="border p-3">Nomor Transaksi</th>
-                        <th class="border p-3">Serial Number</th>
-                        <th class="border p-3">Produk</th>
-                        <th class="border p-3">Transaksi Pembelian</th>
-                        <th class="border p-3">Tanggal Transaksi</th>
-                        <th class="border p-3">Service Type</th>
-                        <th class="border p-3">Metode Pembelian</th>
-                        <th class="border p-3">Status</th>
-                    </tr>
+            <table class="table table-auto border-collapse border w-full mt-3 my-8">
+                <thead id="thead">
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="border p-3">628773491005</td>
-                        <td class="border p-3">TK_DSUNFF5</td>
-                        <td class="border p-3">Free Fire 5 Diamonds + 100MB</td>
-                        <td class="border p-3">1000.0</td>
-                        <td class="border p-3">2022-10-07 15:08:57</td>
-                        <td class="border p-3">fulfillment</td>
-                        <td class="border p-3">Sidompul</td>
-                        <td class="border p-3">Sukses</td>
-                    </tr>
+                <tbody id="data">
                 </tbody>
             </table>
-    
         </div>
     </div>
 </div>
+
+<script>
+    const uri = `<%= process.env.APP_HOST%>`
+    let val = 'get-product-list';
+
+    $(function () {
+        loadData('get-product-list')
+
+        $('#setProduct').on('change', (event) => {
+            val = event.target.value
+
+            switch(val) {
+                case 'get-awg-stock':
+                    changeShowSelect('block')
+                    break;
+                case 'get-xwg-stock':
+                    changeShowSelect('block')
+                    break; 
+                default: 
+                    changeShowSelect('hidden')
+                    break;
+            }
+        })
+
+        $('#button-filter').on('click', (event) => {
+            event.preventDefault();
+            loadData(val)
+        })
+    })
+
+    const loadData = (path) => {
+        const data = {
+            path: path,
+            apiId: user.app_id,
+            apiKey: user.app_key,
+            clientId: user.client_id,
+            clientSecret: user.client_secret,
+        }
+
+        if(path != 'get-product-list')
+            roType = $('#type').val()
+        
+        $.ajax({
+            url: `${uri}/apitrx`,
+            method: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                let html;
+                let thead = `
+                    <tr>
+                        <th class="border p-3">No</th>
+                        <th class="border p-3">Kode Produk</th>
+                        <th class="border p-3">Nama Produk</th>
+                        <th class="border p-3">Harga Produk</th>
+                    </tr>
+                `
+                if(path != 'get-product-list')
+                    thead = `
+                        <tr>
+                            <th class="border p-3">No</th>
+                            <th class="border p-3">Id Voucher (vid)</th>
+                            <th class="border p-3">Tipe Kode Voucher</th>
+                            <th class="border p-3">Stok Voucher</th>
+                            <th class="border p-3">Harga Voucher</th>
+                            <th class="border p-3">Tipe Yang Diterima</th>
+                            <th class="border p-3">Description</th>
+                            <th class="border p-3">Tanggal Aktif</th>
+                            <th class="border p-3">Tanggal Berakhir</th>
+                            <th class="border p-3">Tanggal Berakhir Pembayaran</th>
+                        </tr>
+                    `
+
+
+                $.each(response.result.data, (key, value) => {
+                    html += `
+                        <tr>
+                            <td class="border p-3">${key + 1}</td>
+                            <td class="border p-3">${value.productCode}</td>
+                            <td class="border p-3">${value.productName}</td>
+                            <td class="border p-3">Rp. ${new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(value.price)}</td>
+                        </tr>
+                    `
+                })
+                if(path != 'get-product-list')
+                    $.each(response.result.data, (key, value) => {
+                        html += `
+                            <tr>
+                                <td class="border p-3">${key + 1}</td>
+                                <td class="border p-3">${value.vId}</td>
+                                <td class="border p-3">${value.voucherTypeCode}</td>
+                                <td class="border p-3">${value.voucherBalance}</td>
+                                <td class="border p-3">Rp. ${new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(value.voucherPrice)}</td>
+                                <td class="border p-3">${value.allowType}</td>
+                                <td class="border p-3">${value.description}</td>
+                                <td class="border p-3">${value.effectiveDate}</td>
+                                <td class="border p-3">${value.expirationDate}</td>
+                                <td class="border p-3">${value.vouExpDate}</td>
+                            </tr>
+                        `
+                    })
+
+                $('#thead').html(thead)
+                $('#data').html(html)
+            }
+        })
+    }
+
+    const changeShowSelect = (val) => {
+        if(val == 'block') {
+            $('#type').removeClass('hidden')
+            $('#type').addClass('block')
+            return;
+        }
+
+        $('#type').removeClass('block')
+        $('#type').addClass('hidden')
+        return;
+    }
+</script>
+
 <%- include('./layouts/footer') %>
