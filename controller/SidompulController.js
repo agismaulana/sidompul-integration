@@ -5,7 +5,7 @@ dotenv.config()
 const { SIDOMPUL_URL } = process.env;
 
 // Authorization get Token
-exports.getToken = (req, res, next) => {
+exports.getToken = (req, res) => {
     const uri = `${SIDOMPUL_URL}token`
     const {
         clientId,
@@ -29,21 +29,24 @@ exports.getToken = (req, res, next) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         if(code !== 200) 
             return res.status(code).json(result)
         req.session.authorization = result.access_token
-        return next()
+        return;
     })
     .catch(err => {
-        return res.json(err)
+         err.json().then(body => {
+            return body;
+        })
     })
 }
 
 // encrypted Pin
-exports.encryptedPin = (req, res, next) => {
+exports.encryptedPin = (req, res) => {
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/post-encrypt`
     const {
         apiId,
@@ -71,19 +74,18 @@ exports.encryptedPin = (req, res, next) => {
     })
     .then(response => {
         code = response.status
-        // console.log(response)
-        console.log(response)
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then((result) => {
-        if(code !== 200) 
-            return res.status(code).json(result)
-        
-        console.log(result)
         req.session.pin = result.result.data
-        return next()
+        return;
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then(body => {
+            return body;
+        })
+    })
 }
 
 // GET Pulsa Balance
@@ -109,12 +111,17 @@ exports.getPulsaBalance = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // GET Dompul Balance
@@ -140,12 +147,17 @@ exports.getDompulBalance = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // POST Purchase Packge
@@ -180,12 +192,17 @@ exports.postPackage = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // POST Purchase Package Deduct Pulsa
@@ -220,12 +237,17 @@ exports.postPackagePulsa = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // POST Reload w2p
@@ -253,8 +275,6 @@ exports.postW2P = (req, res) => {
         denom
     }
 
-    console.log(body, headers, req.session)
-
     fetch(uri, {
         headers,
         method: 'POST',
@@ -262,12 +282,17 @@ exports.postW2P = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // GET AWG Stock
@@ -294,13 +319,16 @@ exports.getAWGStock = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
     .catch(err => {
-        return res.json(err)
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
     })
 }
 
@@ -338,12 +366,17 @@ exports.postAWGTembak = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // POST AWG Transaction Info Detail
@@ -377,12 +410,17 @@ exports.postAWGTransactionInfoDetail = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // GET XWG Stock
@@ -410,13 +448,16 @@ exports.getXWGStock = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
     .catch(err => {
-        return res.json(err)
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
     })
 }
 
@@ -454,12 +495,17 @@ exports.postXWGTembak = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // POST XWG Transaction Info Detail
@@ -493,12 +539,17 @@ exports.postXWGTransactionInfoDetail = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // GET Product List
@@ -522,12 +573,17 @@ exports.getProductList = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // Get Transaction History
@@ -553,12 +609,17 @@ exports.transactionHistory = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
 
 // Get Transaction History Detail
@@ -585,13 +646,16 @@ exports.transactionHistoryDetail = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
     .catch(err => {
-        return res.json(err)
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
     })
 }
 
@@ -619,13 +683,17 @@ exports.getAWGTransactionInfo = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
+        console.log(result)
         return res.status(code).json(result)
     })
     .catch(err => {
-        return res.json(err)
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
     })
 }
 
@@ -653,10 +721,15 @@ exports.getXWGTransactionInfo = (req, res) => {
     })
     .then(response => {
         code = response.status
+        if(!response.ok) { throw response }
         return response.json()
     })
     .then(result => {
         return res.status(code).json(result)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+        err.json().then((body) => {
+            return res.status(body.statusCode).json(body.result)
+        })
+    })
 }
