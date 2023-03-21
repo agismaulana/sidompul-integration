@@ -71,12 +71,15 @@ exports.encryptedPin = (req, res, next) => {
     })
     .then(response => {
         code = response.status
+        // console.log(response)
+        console.log(response)
         return response.json()
     })
     .then((result) => {
         if(code !== 200) 
             return res.status(code).json(result)
         
+        console.log(result)
         req.session.pin = result.result.data
         return next()
     })
@@ -246,9 +249,11 @@ exports.postW2P = (req, res) => {
 
     const body = {
         msisdn,
-        pin,
+        pin: req.session.pin,
         denom
     }
+
+    console.log(body, headers, req.session)
 
     fetch(uri, {
         headers,
