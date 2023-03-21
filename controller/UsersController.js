@@ -46,7 +46,6 @@ exports.store = (req, res) => {
             )`,
             (err) => {
                 if(err)
-                    console.log(err)
                     return res.redirect('/users')
 
                 return res.redirect('/users');
@@ -81,7 +80,6 @@ exports.edit = (req, res) => {
         db.get(
             `SELECT * FROM users WHERE id=${req.params.id}`,
             (err, row) => {
-                console.log(row)
                 return res.render('users/create', {
                     'title': 'Tambah User',
                     'user': row,

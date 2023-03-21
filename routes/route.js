@@ -48,23 +48,26 @@ module.exports = (app, router) => {
     }
 
     const manageAuthorization = (req, res, next) => {
-        return path['get-token'](req, res, next)
+        path['get-token'](req, res, next)
+        return;
     }
-
+    
     const managePin = (req, res, next) => {
-        return path['encrypted-pin'](req, res, next)
+        path['encrypted-pin'](req, res, next)
+        return;
     }
 
-    const middlewareSession = async(req, res, next) => {
+    const middlewareSession = async (req, res, next) => {
+        await manageAuthorization(req, res)
         if(req.body.pin) {
-            await manageAuthorization(req, res, next) 
-            await managePin(req, res, next)
-            return;
-        } else {
-            await manageAuthorization(req, res, next) 
-            return;
+            setTimeout(() => {
+                managePin(req, res);
+            }, 3200)
         }
-        next()
+        setTimeout(() => {
+            return next();
+        }, 5200)
+
     }
 
     router.post('/', (req, res) => {
