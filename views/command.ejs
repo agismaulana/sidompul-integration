@@ -1,0 +1,31 @@
+<%- include('./layouts/header') %>
+
+<div class="container mx-auto px-5 pt-3">
+    <div class="grid">
+        <div class="flex align-middle justify-between">
+            <div class="my-auto">
+                <h3 class="text-2xl">List Command</h3>
+            </div>
+        </div>
+    
+        <div>
+            <table class="table table-auto border-collapse border w-full mt-12 mb-8">
+                <thead>
+                    <tr>
+                        <th class="border p-3">Nama</th>
+                        <th class="border p-3">Command</th>
+                    </tr>
+                </thead>
+                <tbody id="data">
+                    <% command.forEach((value)=> { %>
+                        <tr>
+                            <td class="border p-3"><%= value.name %></td>
+                            <td class="border p-3"><%= value.command.replace(/base_url/i, `${process.env.APP_HOST}`) %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<%- include('./layouts/footer') %>

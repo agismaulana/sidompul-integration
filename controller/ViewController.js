@@ -1,5 +1,6 @@
 const db = require('./../config/config');
 const cryptoJS = require('crypto-js');
+const fs = require('fs')
 
 exports.historyTransaction = async (req, res) => {
     db.serialize(() => {
@@ -92,6 +93,18 @@ exports.listProduct = (req, res) => {
            } 
         )
     })
+}
+exports.listCommand = (req, res) => {
+    fs.readFile('command.json', (err, value) => {
+        return res.render('command', {
+            'title': 'List Command',
+            'user': {},
+            'loggedIn': true,
+            'command': JSON.parse(value),
+            'admin': req.session.admin ?? null
+        })
+    })
+
 }
 
 exports.login = (req, res) => {

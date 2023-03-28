@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Get AWG Stock",
+    "command": "base_url/apitrx/?path=get-awg-stock&type=MINI-GROSIR"
+  },
+  {
+    "id": 2,
+    "name": "Get AWG Transaction History",
+    "command": "base_url/apitrx/?path=get-awg-transaction-history&beginDate=05-03-2023&endDate=10-03-2023&type=PHYSICALVOUCHER"
+  },
+  {
+    "id": 3,
+    "name": "Get AWG Transaction Info Detail",
+    "command": "base_url/apitrx/?path=get-awg-transaction-info-detail"
+  },
+  {
+    "id": 4,
+    "name": "Get AWG Stock",
+    "command": "base_url/apitrx/?path=get-xwg-stock&type=MINI-GROSIR"
+  },
+  {
+    "id": 5,
+    "name": "Get XWG Transaction History",
+    "command": "base_url/apitrx/?path=get-xwg-transaction-history&beginDate=05-03-2023&endDate=10-03-2023&type=SELLVOUCHER"
+  },
+  {
+    "id": 6,
+    "name": "Get AWG Transaction Info Detail",
+    "command": "base_url/apitrx/?path=get-awg-transaction-info-detail"
+  },
+  {
+    "id": 7,
+    "name": "Get Product List",
+    "command": "base_url/apitrx/?path=get-product-list"
+  },
+  {
+    "id": 8,
+    "name": "Get Dompul Balance",
+    "command": "base_url/apitrx/?path=get-dompul-balance"
+  },
+  {
+    "id": 9,
+    "name": "Get Pulsa Balance",
+    "command": "base_url/apitrx/?path=get-pulsa-balance"
+  },
+  {
+    "id": 10,
+    "name": "Get Transaction History",
+    "command": "base_url/apitrx/?path=get-transaction-history&startDate=05-03-2023&endDate=10-03-2023"
+  },
+  {
+    "id": 11,
+    "name": "Get Transaction History Detail",
+    "command": "base_url/apitrx/?path=get-transaction-history-detail&transactionId=18acbb64386f81aea56c56da2fc8ebdd8d195976&msisdn=6287801311557&orderStatus=SUCCESS"
+  },
+  {
+    "id": 12,
+    "name": "POST AWG TEMBAK",
+    "command": "base_url/apitrx/?path=post-awg-tembak&target=6287824242242&vid=0A6fgCJRGYaXOrIBDZaP5GeRNE7PRHdc9GXlxNAphDaVDi31IE9j7dbEfQYg0jma1srQqxNvPRcfhMGUwot23lhTNL9%2BIdPMfNs4bQnVFTo%3D&command=tembak-paker-ir&type=TRS"
+  },
+  {
+    "id": 13,
+    "name": "Post XWG Tembak",
+    "command": "base_url/apitrx/?path=post-xwg-tembak&target=6287824242242&vid=0A6fgCJRGYaXOrIBDZaP5GeRNE7PRHdc9GXlxNAphDaVDi31IE9j7dbEfQYg0jma1srQqxNvPRcfhMGUwot23lhTNL9%2BIdPMfNs4bQnVFTo%3D&command=sell-voucher&type=TRS"
+  },
+  {
+    "id": 14,
+    "name": "Post Reload W2P",
+    "command": "base_url/apitrx/?path=post-w2p&denom=5000&msisdn=6281808793089"
+  }
+]
