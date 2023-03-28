@@ -51,17 +51,17 @@ module.exports = (app, route) => {
     })
     route.post('/sign', isLoggedIn, signedIn)
 
-    route.get('/users', adminMiddlewareLogin, index);
-    route.get('/users/create', adminMiddlewareLogin, create);
-    route.post('/users', adminMiddlewareLogin, store);
-    route.get('/users/:id', adminMiddlewareLogin, edit);
-    route.get('/users/:id/detail', adminMiddlewareLogin, show);
-    route.post('/users/:id', adminMiddlewareLogin, update);
-    route.get('/users/:id/delete', adminMiddlewareLogin, destroy);
+    route.get('/users', index);
+    route.get('/users/create', create);
+    route.post('/users', store);
+    route.get('/users/:id', edit);
+    route.get('/users/:id/detail', show);
+    route.post('/users/:id', update);
+    route.get('/users/:id/delete', destroy);
     
-    route.get('/index', middlewareLogin, historyTransaction)
-    route.get('/awg-index', middlewareLogin, awgHistoryTransaction)
-    route.get('/xwg-index', middlewareLogin, xwgHistoryTransaction)
-    route.get('/list-product', middlewareLogin, listProduct)
+    route.get('/index', historyTransaction)
+    route.get('/awg-index', awgHistoryTransaction)
+    route.get('/xwg-index', xwgHistoryTransaction)
+    route.get('/list-product', listProduct)
     app.use('/', route)
 }

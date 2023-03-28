@@ -87,10 +87,10 @@
             method: 'POST',
             data: JSON.stringify({
                 path: 'get-xwg-transaction-info',
-                apiId: `<%= user.app_id ?? null %>`,
-                apiKey: `<%= user.app_key ?? null %>`,
-                clientId: `<%= user.client_id ?? null %>`,
-                clientSecret: `<%= user.client_secret ?? null %>`,
+                apiId: `<%= process.env.API_ID ?? null %>`,
+                apiKey: `<%= process.env.API_KEY ?? null %>`,
+                clientId: `<%= process.env.CLIENT_ID ?? null %>`,
+                clientSecret: `<%= process.env.CLIENT_SECRET ?? null %>`,
                 beginDate: data.beginDate,
                 endDate: data.endDate,
                 type: data.serviceType

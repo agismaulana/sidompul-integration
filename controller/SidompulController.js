@@ -552,6 +552,10 @@ exports.getProductList = (req, res) => {
 
 // Get Transaction History
 exports.transactionHistory = (req, res) => {
+    const {
+        startDate,
+        endDate,
+    } = req.body
     const uri = `${SIDOMPUL_URL}sidompul/openapi/v1/get-transaction-history?startdate=${startDate}&enddate=${endDate}`
     const headers = {
         'Authorization': `Bearer ${req.session.authorization}`,
@@ -638,11 +642,7 @@ exports.getAWGTransactionInfo = (req, res) => {
     })
     .then(response => {
         code = response.status
-        console.log(response.ok);
         if(!response.ok) {
-            if(code == 503) {
-                throw response.text()
-            } 
             throw response
         }
         return response.json()
@@ -651,6 +651,11 @@ exports.getAWGTransactionInfo = (req, res) => {
         return res.status(code).json(result)
     })
     .catch(err => {
+        if(code == 503) {
+            return res.status(code).json({
+                'message': 'Service Unavailable'
+            })
+        }
         err.json().then((body) => {
             return res.status(body.statusCode).json(body.result)
         })
@@ -686,6 +691,11 @@ exports.getXWGTransactionInfo = (req, res) => {
         return res.status(code).json(result)
     })
     .catch(err => {
+        if(code == 503) {
+            return res.status(code).json({
+                'message': 'Service Unavailable'
+            })
+        }
         err.json().then((body) => {
             return res.status(body.statusCode).json(body.result)
         })
