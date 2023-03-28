@@ -4,6 +4,7 @@ const {
     xwgHistoryTransaction,
     awgHistoryTransaction,
     listProduct,
+    listCommand,
     login,
     signedIn
 } = require('../controller/ViewController') 
@@ -63,5 +64,6 @@ module.exports = (app, route) => {
     route.get('/awg-index', awgHistoryTransaction)
     route.get('/xwg-index', xwgHistoryTransaction)
     route.get('/list-product', listProduct)
+    route.get('/list-command', listCommand)
     app.use('/', route)
 }
